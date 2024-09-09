@@ -6,6 +6,8 @@
     <title>Unity WebGL Player | wyft_Web</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
+    <!-- WebXR Polyfill 추가 -->
+    <script src="https://cdn.jsdelivr.net/npm/webxr-polyfill@latest/build/webxr-polyfill.min.js"></script>
 </head>
 <body>
     <div id="unity-container" class="unity-desktop">
@@ -23,7 +25,6 @@
             <div id="unity-build-title">wyft_Web</div>
         </div>
     </div>
-
     <script>var container = document.querySelector("#unity-container");
         var canvas = document.querySelector("#unity-canvas");
         var loadingBar = document.querySelector("#unity-loading-bar");
@@ -31,8 +32,6 @@
         var fullscreenButton = document.querySelector("#unity-fullscreen-button");
         var warningBanner = document.querySelector("#unity-warning");
 
-        // Shows a temporary message banner/ribbon for a few seconds, or
-        // a permanent error message on top of the canvas if type=='error'.
         function unityShowBanner(msg, type) {
             function updateBannerVisibility() {
                 warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
@@ -89,31 +88,12 @@
                     unityInstance.SetFullscreen(1);
                 };
 
-                // 카메라 권한 요청 추가
-                requestCameraAccess();
+                // WebXR 사용 코드 추가 가능
 
             }).catch((message) => {
                 alert(message);
             });
         };
-
-        document.body.appendChild(script);
-
-        // 카메라 접근 권한 요청 함수
-        function requestCameraAccess() {
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                navigator.mediaDevices.getUserMedia({ video: true })
-                    .then(function (stream) {
-                        console.log('카메라 접근 허용됨');
-                    })
-                    .catch(function (err) {
-                        console.log('카메라 접근 거부됨: ' + err);
-                        unityShowBanner('카메라 접근 권한이 필요합니다. 설정에서 카메라 접근을 허용해주세요.', 'warning');
-                    });
-            } else {
-                console.log('이 브라우저는 카메라 접근을 지원하지 않습니다.');
-                unityShowBanner('이 브라우저는 카메라 접근을 지원하지 않습니다.', 'error');
-            }
-        }</script>
+        document.body.appendChild(script);</script>
 </body>
 </html>
